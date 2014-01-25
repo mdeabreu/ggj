@@ -2,8 +2,8 @@
     var gravAcceleration = 0.1;
     var maxFallSpeed = 15;
 
-    function Player(image, canvas) {
-        this.initialize(image, canvas);
+    function Player(image, canvas, x, y) {
+        this.initialize(image, canvas, x, y);
     }
 
     Player.prototype = new createjs.Bitmap();
@@ -12,10 +12,15 @@
     Player.prototype.Bitmap_initialize = Player.prototype.initialize;
 
     // Initialize the player object
-    Player.prototype.initialize = function (image, canvas) {
+    Player.prototype.initialize = function (image, canvas, x, y) {
         this.Bitmap_initialize(image);
         this.name = 'Player';
         this.snapToPixel = true;
+        this.initX = x;
+        this.initY = y;
+        this.x = x;
+        this.y = y;
+        
         this.movement = 0;
         this.velocity = new createjs.Point(0, 0);
         this.canvas = canvas;
@@ -83,7 +88,8 @@
 
     // Reset the player
     Player.prototype.reset = function() {
-        this.y = 0;
+        this.x = this.initX;
+        this.y = this.initY;
     }
 
     window.Player = Player;

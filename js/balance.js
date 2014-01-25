@@ -19,7 +19,7 @@
         stage = new createjs.Stage(canvas);
 
         // Load the image for our player
-        player = new Player("assets/player.png", canvas);
+        player = new Player("assets/player.png", canvas, 100, 100);
         stage.addChild(player);
         player.reset();
 
