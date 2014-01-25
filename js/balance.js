@@ -10,6 +10,7 @@
     var KEYCODE_S = 83;
     var KEYCODE_D = 68;
     var KEYCODE_R = 82;
+    var KEYCODE_P = 80;
     var KEYCODE_SPACE = 32;
 
     function init() {
@@ -53,6 +54,12 @@
             player.move(1);
         }  else if (e.keyCode == KEYCODE_SPACE) {
             player.jump();
+        } else if (e.keyCode == KEYCODE_P) {
+            if (createjs.Ticker.getPaused()) {
+                createjs.Ticker.setPaused(false);
+            } else {
+                createjs.Ticker.setPaused(true);
+            }
         }
     });
 
