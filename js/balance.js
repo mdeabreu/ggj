@@ -47,11 +47,9 @@ function tick(e) {
 
 // Handle any key down events
 function handleKeyDown(e) {
-    console.log(e);
-
     // Pass any important key down events to the player object
     if (e.keyCode == KEYCODE_R) {
-        player.reset();
+        player.handleKeyDown(e);
     } else if (e.keyCode == KEYCODE_W) {
         player.handleKeyDown(e);
     } else if (e.keyCode == KEYCODE_A) {
@@ -65,7 +63,15 @@ function handleKeyDown(e) {
 
 // Handle any key up events
 function handleKeyUp(e) {
-    //player.reset();
+    if (e.keyCode == KEYCODE_W) {
+        player.handleKeyUp(e);
+    } else if (e.keyCode == KEYCODE_A) {
+        player.handleKeyUp(e);
+    } else if (e.keyCode == KEYCODE_S) {
+        player.handleKeyUp(e);
+    } else if (e.keyCode == KEYCODE_D) {
+        player.handleKeyUp(e);
+    } 
 }
 
 // If the user clicks the "Play" button, unpause the Ticker
