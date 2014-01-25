@@ -19,12 +19,12 @@
         stage = new createjs.Stage(canvas);
 
         // Load the image for our player
-        player = new Player("assets/player.png", canvas, 100, 100);
+        player = new Player("assets/regularSprites/shadowIdle_right.png", canvas, 100, 100);
         stage.addChild(player);
         player.reset();
 
         // Set the parameters for our Ticker including the function we call every tick
-        createjs.Ticker.setFPS(30);
+        createjs.Ticker.setFPS(60);
         createjs.Ticker.addEventListener("tick", tick);
     }
 
