@@ -22,6 +22,9 @@
         stage.addChild(player);
         player.reset();
 
+        var tiles = loadTiles();
+        stage.addChild(tiles);
+
         // Set the parameters for our Ticker including the function we call every tick
         createjs.Ticker.setFPS(30);
         createjs.Ticker.addEventListener("tick", tick);
