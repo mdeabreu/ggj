@@ -2,6 +2,8 @@
     var tileImage = new Image();
     tileImage.src = "assets/tile.png";
 
+    var tileSize = 64;
+
     var tileMap = [
         [0, 0, 0],
         [0, 0, 0],
@@ -30,8 +32,8 @@
                 if(cell == 1)
                     bitmap = new createjs.Bitmap(tileImage);
 
-                bitmap.x = j * 64;
-                bitmap.y = i * 64;
+                bitmap.x = j * tileSize;
+                bitmap.y = i * tileSize;
                 tiles.addChild(bitmap);
             }
         }
@@ -39,9 +41,16 @@
         return tiles;
     }
 
-    function loadPassability() {
-        return passabilityMap;
+    function handleTileCollisions(player) {
+        for(var i = 0; i < passabilityMap.length; ++i) {
+            var row = passabilityMap[i];
+            for(var j = 0; j < row.length; ++j) {
+                var dx = player.x - j * tileSize;
+                var dy = player.y - i * tileSize;
+            }
+        }
     }
 
     window.loadTiles = loadTiles;
+    window.handleTileCollisions = handleTileCollisions;
 })();

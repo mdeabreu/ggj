@@ -23,8 +23,7 @@
         stage.addChild(player);
         player.reset();
 
-        var tiles = loadTiles();
-        stage.addChild(tiles);
+        stage.addChild(loadTiles());
 
         // Set the parameters for our Ticker including the function we call every tick
         createjs.Ticker.setFPS(60);
@@ -33,11 +32,9 @@
 
     // The tick function, every time the Ticker ticks, this method is called
     function tick(e) {
-        // Check if the ticker has been paused, if not continue running
-        if (!e.paused) {
-            player.tick();
-            stage.update();
-        }
+        handleTileCollisions(player);
+        player.tick();
+        stage.update();
     }
 
     // Handle key events
@@ -67,16 +64,6 @@
         } else if (e.keyCode == KEYCODE_D) {
             player.unmove(1);
         } 
-    });
-
-    // If the user clicks the "Play" button, unpause the Ticker
-    $("#play").click(function() {
-        createjs.Ticker.setPaused(false);
-    });
-
-    // If the user clicks the "Pause" button, pause the Ticker
-    $("#pause").click(function() {
-        createjs.Ticker.setPaused(true);
     });
 
     init();
