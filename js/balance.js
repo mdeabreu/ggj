@@ -11,7 +11,7 @@
         stage = new createjs.Stage(canvas);
 
         // Load the image for our player
-        player = new Player("assets/regularSprites/shadowIdle_right.png", canvas, 100, 100);
+        player = new Player("assets/lightRun/spritesheet.png", canvas, 100, 100);
         stage.addChild(player);
 
         // load the tile map
