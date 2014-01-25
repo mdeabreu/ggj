@@ -2,8 +2,9 @@
     var gravAccel = 0.1;
     var moveAccel = 8;
     var groundDrag = 0.5;
-    var maxFallSpeed = 15;
-    var maxMoveSpeed = 15;
+    var jumpImpulse = -25;
+    var maxFallSpeed = 9;
+    var maxMoveSpeed = 7;
 
     function Player(image, canvas, x, y) {
         this.initialize(image, canvas, x, y);
@@ -50,7 +51,7 @@
         
         // Handle jumping
         if (this.jumping == true && this.onGround == true) {
-            this.velocity.y = -20;
+            this.velocity.y = jumpImpulse;
             this.jumping = false;
             this.onGround = false;
         }
