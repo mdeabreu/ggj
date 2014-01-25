@@ -24,10 +24,17 @@
                 run: {
                     frames: [0, 1, 2, 3, 4, 5, 6, 7],
                     speed: 0.3
-                }
+                },
+                idle: {
+                    frames: [1],
+                }/*,
+                jump: {
+                    frames: [],
+                    speed: 0.3
+                }*/
             }
         };
-        this.Sprite_initialize(new createjs.SpriteSheet(data), "run");
+        this.Sprite_initialize(new createjs.SpriteSheet(data), "idle");
         this.name = "Player";
         this.snapToPixel = true;
         this.initX = x;
@@ -96,10 +103,25 @@
     };
 
     Player.prototype.applyAnimation = function() {
+        // Deal with any transformation that may need to occur
         if (this.movement > 0){
+            if (this.currentAnimation != "run") {
+                this.gotoAndPlay("run");
+            }
             this.setTransform(this.x, this.y, 1);
         } else if (this.movement < 0) {
+            if (this.currentAnimation != "run") {
+                this.gotoAndPlay("run");
+            }
             this.setTransform(this.x, this.y, -1, 1, 0, 0, 0, this.width, 0);
+        }
+
+        if (this.movement == 0) {
+            this.gotoAndPlay("idle");
+        }
+
+        if (this.jumping == true) {
+            //this.gotoAndPlay("jump");
         }
     };
 
