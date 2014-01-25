@@ -10,18 +10,30 @@
         this.initialize(image, canvas, x, y);
     }
 
-    Player.prototype = new createjs.Bitmap();
+    Player.prototype = new createjs.Sprite();
 
-    // Save the original initialize method
-    Player.prototype.Bitmap_initialize = Player.prototype.initialize;
+    // Backup the original initialize method
+    Player.prototype.Sprite_initialize = Player.prototype.initialize;
 
     // Initialize the player object
     Player.prototype.initialize = function (image, canvas, x, y) {
-        this.Bitmap_initialize(image);
-        this.name = 'Player';
+        data = {
+            images: [image],
+            frames: {width:128, height:160},
+            animations: {
+                run: {
+                    frames: [0, 1, 2, 3, 4, 5, 6, 7],
+                    speed: 0.3
+                }
+            }
+        };
+        this.Sprite_initialize(new createjs.SpriteSheet(data), "run");
+        this.name = "Player";
         this.snapToPixel = true;
         this.initX = x;
         this.initY = y;
+        this.width = 128;
+        this.height = 160;
         this.x = x;
         this.y = y;
         
@@ -30,7 +42,7 @@
         this.canvas = canvas;
         this.jumping = false;
         this.onGround = false;
-    }
+    };
 
     // Every tick this method will be called
     Player.prototype.tick = function () {
@@ -59,8 +71,8 @@
         // Deal with player movement based on a velocity vector
         this.y += this.velocity.y;
 
-        if (this.y >= this.canvas.height - this.image.height) {
-            this.y = this.canvas.height - this.image.height;
+        if (this.y >= this.canvas.height - this.height) {
+            this.y = this.canvas.height - this.height;
             this.onGround = true;
         }
 
@@ -71,15 +83,25 @@
             this.velocity.x = 0;
         }
 
-        if (this.x >= this.canvas.width - this.image.width) {
-            this.x = this.canvas.width - this.image.width;
+        if (this.x >= this.canvas.width - this.width) {
+            this.x = this.canvas.width - this.width;
             this.velocity.x = 0;
         }
         if (this.x <= 0) {
             this.x = 0;
             this.velocity.x = 0;
         }
-    }
+
+        this.applyAnimation();
+    };
+
+    Player.prototype.applyAnimation = function() {
+        if (this.movement > 0){
+            this.setTransform(this.x, this.y, 1);
+        } else if (this.movement < 0) {
+            this.setTransform(this.x, this.y, -1, 1, 0, 0, 0, this.width, 0);
+        }
+    };
 
     Player.prototype.move = function(amount) {
         this.movement += amount;
@@ -91,13 +113,13 @@
 
     Player.prototype.jump = function() {
         this.jumping = true;
-    }
+    };
 
     // Reset the player
     Player.prototype.reset = function() {
         this.x = this.initX;
         this.y = this.initY;
-    }
+    };
 
     window.Player = Player;
 })();
