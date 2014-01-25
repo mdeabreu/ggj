@@ -10,6 +10,7 @@
     var KEYCODE_S = 83;
     var KEYCODE_D = 68;
     var KEYCODE_R = 82;
+    var KEYCODE_SPACE = 32;
 
     function init() {
         // Grab our canvas, focus it and set it as our stage
@@ -18,7 +19,7 @@
         stage = new createjs.Stage(canvas);
 
         // Load the image for our player
-        player = new Player("assets/player.png", canvas);
+        player = new Player("assets/player.png", canvas, 100, 100);
         stage.addChild(player);
         player.reset();
 
@@ -53,7 +54,9 @@
             player.move(-1);
         } else if (e.keyCode == KEYCODE_D) {
             player.move(1);
-        } 
+        }  else if (e.keyCode == KEYCODE_SPACE) {
+            player.jump();
+        }
     });
 
     $("#balance-canvas").keyup(function(e) {
