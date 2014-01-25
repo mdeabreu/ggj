@@ -1,5 +1,5 @@
 (function() {
-    var gravAcceleration = 0.1;
+    var gravAccel = 0.1;
     var maxFallSpeed = 15;
 
     function Player(image, canvas, x, y) {
@@ -32,30 +32,18 @@
     Player.prototype.tick = function () {
         // Handle walking
         if (this.movement > 0) {
-            // Start moving to the right, and collide with the edge of the canvas
-            // We will need to fix this so that the camera stays focused on the
-            // player and the platforms move behind
-            if (this.x >= this.canvas.width - this.image.width) {
-                this.x = this.canvas.width - this.image.width;
-            } else {
-                this.x += 10;
-            }
+            // Start moving to the right
+            this.velocity.x = 10;
         } else if (this.movement < 0) {
-            // Start moving to the left, and collide with the edge of the canvas
-            // Same with moving to the right, we will need to make some changes
-            // in the future
-            if (this.x <= 0) {
-                this.x = 0;
-            } else {
-                this.x -= 10;
-            }
+            // Start moving to the left
+            this.velocity.x = -10;
         }
 
         // Handle gravity
         if (this.velocity.y >= maxFallSpeed) {
             this.velocity.y = maxFallSpeed;
         } else {
-            this.velocity.y = gravAcceleration * maxFallSpeed + (1 - gravAcceleration) * this.velocity.y;
+            this.velocity.y = gravAccel * maxFallSpeed + (1 - gravAccel) * this.velocity.y;
         }
         
         // Handle jumping
@@ -71,6 +59,16 @@
         if (this.y >= this.canvas.height - this.image.height) {
             this.y = this.canvas.height - this.image.height;
             this.onGround = true;
+        }
+
+        this.x += this.velocity.x;
+        this.velocity.x = 0;
+
+        if (this.x >= this.canvas.width - this.image.width) {
+            this.x = this.canvas.width - this.image.width;
+        }
+        if (this.x <= 0) {
+            this.x = 0;
         }
     }
 
