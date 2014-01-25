@@ -1,6 +1,9 @@
 (function() {
     var gravAccel = 0.1;
+    var moveAccel = 8;
+    var groundDrag = 0.5;
     var maxFallSpeed = 15;
+    var maxMoveSpeed = 15;
 
     function Player(image, canvas, x, y) {
         this.initialize(image, canvas, x, y);
@@ -31,12 +34,11 @@
     // Every tick this method will be called
     Player.prototype.tick = function () {
         // Handle walking
-        if (this.movement > 0) {
-            // Start moving to the right
-            this.velocity.x = 10;
-        } else if (this.movement < 0) {
-            // Start moving to the left
-            this.velocity.x = -10;
+        if (this.movement != 0) {
+            this.velocity.x += this.movement * moveAccel;
+            if (this.movement * this.velocity.x >= maxMoveSpeed) {
+                this.velocity.x = this.movement * maxMoveSpeed;
+            }
         }
 
         // Handle gravity
@@ -62,13 +64,19 @@
         }
 
         this.x += this.velocity.x;
-        this.velocity.x = 0;
+        //this.velocity.x += -1 * this.movement * groundDrag;
+        this.velocity.x *= groundDrag;
+        if (Math.abs(this.velocity.x) < 0.1) {
+            this.velocity.x = 0;
+        }
 
         if (this.x >= this.canvas.width - this.image.width) {
             this.x = this.canvas.width - this.image.width;
+            this.velocity.x = 0;
         }
         if (this.x <= 0) {
             this.x = 0;
+            this.velocity.x = 0;
         }
     }
 
