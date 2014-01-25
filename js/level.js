@@ -2,19 +2,37 @@
     var tileImage = new Image();
     tileImage.src = "assets/tile.png";
 
+    var Level = {};
+
     var tileSize = 64;
 
+    Level.tileSize = tileSize;
+
     var tileMap = [
-        [0, 0, 0],
-        [0, 0, 0],
-        [1, 1, 1]
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ];
 
     var passabilityMap = [
-        [0, 0, 0],
-        [0, 0, 0],
-        [1, 1, 1]
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ];
+
+    Level.passabilityMap = passabilityMap;
 
     function loadTiles() {
         var tiles = new createjs.Container();
@@ -41,16 +59,6 @@
         return tiles;
     }
 
-    function handleTileCollisions(player) {
-        for(var i = 0; i < passabilityMap.length; ++i) {
-            var row = passabilityMap[i];
-            for(var j = 0; j < row.length; ++j) {
-                var dx = player.x - j * tileSize;
-                var dy = player.y - i * tileSize;
-            }
-        }
-    }
-
     window.loadTiles = loadTiles;
-    window.handleTileCollisions = handleTileCollisions;
+    window.Level = Level;
 })();
