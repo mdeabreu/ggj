@@ -11,6 +11,11 @@
             idle: {
                 frames: [0, 1, 2, 3],
                 speed: 0.15
+            },
+            ping: {
+                frames: [4, 5, 6, 5, 4],
+                next: "idle",
+                speed: 0.15
             }
         }
     };
