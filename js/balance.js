@@ -18,6 +18,9 @@
     player = new Player("assets/lightRun/spritesheet.png", canvas, 100, 100);
     stage.addChild(player);
 
+    // set up the shadow
+    Shadow.initialize(stage);
+
     // load the tile map
     stage.addChild(Level.loadTiles());
 
@@ -34,8 +37,9 @@
             PlayerPhysics.simulate(tick.delta / 1000);
             PlayerCollisions.resolve();
 
-            // update player position
+            // update player and shadow position
             player.update();
+            Shadow.update();
 
             // update camera
             stage.x = -player.x + canvas.width / 2;
@@ -49,6 +53,7 @@
         });
     });
 
+    // handle network messages
     socket.on("resources", function(resources) {
         console.log("resources changed: " + resources);
     });
@@ -66,6 +71,7 @@
     });
 
     socket.on("peer movement", function(x, y) {
-        console.log("peer moved to (" + x + ", " + y + ")");
+        Shadow.x = x;
+        Shadow.y = y;
     });
 })();
