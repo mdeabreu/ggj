@@ -4,6 +4,7 @@
     var canvas;
     var player;
     var playerAspect;
+    var gameOver = false;
 
     // small module so other modules can signal the server
     var Server = {}
@@ -102,27 +103,33 @@
 
         // The tick function, every time the Ticker ticks, this method is called
         createjs.Ticker.addEventListener("tick", function(tick) {
-            // run simulations
-            PlayerPhysics.simulate(tick.delta / 1000);
-            PlayerCollisions.resolve();
+            if (!gameOver) {
+                // run simulations
+                PlayerPhysics.simulate(tick.delta / 1000);
+                PlayerCollisions.resolve();
 
-            // update player and shadow position
-            player.update();
-            Shadow.update();
+                // update player and shadow position
+                player.update();
+                Shadow.update();
 
-            // update camera
-            stage.x = -player.x + canvas.width / 2;
-            stage.y = -player.y + canvas.height / 2;
+                // update camera
+                stage.x = -player.x + canvas.width / 2;
+                stage.y = -player.y + canvas.height / 2;
 
-            UserInterface.x = player.x - canvas.width / 2;
-            UserInterface.y = player.y - canvas.height / 2;
-            UserInterface.update();
+                UserInterface.x = player.x - canvas.width / 2;
+                UserInterface.y = player.y - canvas.height / 2;
+                UserInterface.update();
 
-            // draw everything
-            stage.update();
+                // draw everything
+                stage.update();
 
-            // send new state to peer
-            socket.emit("movement", PlayerPhysics.x, PlayerPhysics.y);
+                // send new state to peer
+                socket.emit("movement", PlayerPhysics.x, PlayerPhysics.y);
+            } else {
+                stage.x = 0;
+                stage.y = 0;
+                stage.update();
+            }
         });
 
     });
@@ -148,7 +155,16 @@
     });
 
     socket.on("game over", function() {
-        //console.log("game over!");
+        console.log("game over!");
+        gameOver = true;
+        stage.removeAllChildren();
+        LoseScreen.draw(stage);
+    });
+
+    socket.on("win game", function() {
+        gameOver = true;
+        stage.removeAllChildren();
+        WinScreen.draw(stage);
     });
 
     socket.on("peer movement", function(x, y) {
