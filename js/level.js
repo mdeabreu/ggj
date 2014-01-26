@@ -14,7 +14,8 @@
         'g': "assets/regularSprites/block_grass1.png",
         'G': "assets/regularSprites/block_grass2.png",
         'l': "assets/regularSprites/block_long.png",
-        'L': "assets/regularSprites/block_long_grass.png"
+        'L': "assets/regularSprites/block_long_grass.png",
+        's': "assets/regularSprites/block_spike.png"
     };
 
     var skyTypes = {
@@ -87,6 +88,73 @@
         }
 
         return tiles;
+    };
+
+    Level.generateSky = function() {
+        var res = [];
+        var skyBottom = new createjs.Container();
+        skyBottom.name = "skyBottom";
+        var skyDefault = new createjs.Container();
+        skyDefault.name = "skyDefault";
+        var clouds = new createjs.Container();
+        clouds.name = "clouds";
+
+        var mapWidth = tileMap[0].length;
+        var mapWidthPixels = mapWidth * tileSize;
+        var mapHeight = tileMap.length;
+        var mapHeightPixels = mapHeight * tileSize;
+
+        var padding = 10;
+        for (var i = -padding; i < mapHeight + padding; i++) {
+            for (var j = -padding; j < mapWidth + padding; j++) {
+                var image = new createjs.Bitmap(skyTypes["default"]);
+                image.y = mapHeightPixels - tileSize * i;
+                image.x = j * tileSize;
+                skyDefault.addChild(image);
+            }
+        }
+        res.push(skyDefault);
+
+        // Add sky bottom images
+        for (var i = 0; i < mapWidth; i++) {
+            var image = new createjs.Bitmap(skyTypes["bottom"]);
+            image.y = mapHeightPixels + tileSize;
+            image.x = i * tileSize;
+            skyBottom.addChild(image);
+        }
+        res.push(skyBottom);
+
+        // Add some clouds
+        for (var i = 0; i < mapWidth; i += 2) {
+            var image;
+
+            var rand = Math.random();
+            var y = mapHeightPixels - tileSize * 5;
+            var x = i * tileSize;
+            if (rand < 0.25) {
+                image = new createjs.Bitmap(skyTypes["clouds1"]);
+                image.x = x;
+                image.y = y;
+                clouds.addChild(image);
+            } else if (rand > 0.75) {
+                image = new createjs.Bitmap(skyTypes["clouds2"]);
+                image.x = x;
+                image.y = y;
+                clouds.addChild(image);
+            } else {
+                image = new createjs.Bitmap(skyTypes["default"]);
+                var image2 = new createjs.Bitmap(skyTypes["default"]);
+                image.x = x;
+                image.y = y;
+                image2.x = x + tileSize;
+                image2.y = y;
+                clouds.addChild(image);
+                clouds.addChild(image2);
+            }
+        }
+        res.push(clouds);
+
+        return res;
     };
 
     Level.changeChroma = function(stage, bal) {

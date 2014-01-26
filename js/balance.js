@@ -23,6 +23,12 @@
 
     stage = new createjs.Stage(canvas);
 
+    // generate a skymap
+    var sky = Level.generateSky();
+    for (var i = 0; i < sky.length; i++) {
+        stage.addChild(sky[i]);
+    }
+
     // set up the shadow
     Shadow.initialize(stage);
 
