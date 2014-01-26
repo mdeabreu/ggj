@@ -91,7 +91,6 @@
 
     socket.on("death", function() {
         PlayerPhysics.respawn();
-        socket.emit("died");
     });
 
     socket.on("game over", function() {

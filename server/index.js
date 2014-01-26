@@ -85,7 +85,6 @@ io.sockets.on("connection", function(socket) {
 
     socket.on("death", function(amount) {
         socket.get("state", function(err, state) {
-            socket.emit("death");
             state.peer.emit("death");
 
             state.shared.lives -= 1;
