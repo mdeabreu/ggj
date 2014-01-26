@@ -28,6 +28,14 @@
         socket.emit("death");
     }
 
+    Server.signalOnMirror = function() {
+        socket.emit("enter mirror");
+    }
+
+    Server.signalOffMirror = function() {
+        socket.emit("leave mirror");
+    }
+
     window.Server = Server
 
     // set up controls
@@ -75,7 +83,7 @@
         stage.addChild(Level.loadTiles());
 
         // bgm loop
-        createjs.Sound.play("assets/Lightless Dawn.mp3", {"loop": -1})
+        //createjs.Sound.play("assets/Lightless Dawn.mp3", {"loop": -1})
 
         // Load the image for our player
         if(aspect)
