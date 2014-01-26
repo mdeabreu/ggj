@@ -24,6 +24,7 @@
         "default": "assets/regularSprites/sky_default.png",
         "clouds1": "assets/regularSprites/sky_clouds1.png",
         "clouds2": "assets/regularSprites/sky_clouds2.png",
+        "clouds3": "assets/regularSprites/sky_clouds3.png",
         "mountains": "assets/regularSprites/mountains.png"
     }
 
@@ -152,13 +153,18 @@
             var rand = Math.random();
             var y = mapHeightPixels - tileSize * 5;
             var x = i * tileSize;
-            if (rand < 0.25) {
+            if (rand < 0.10) {
                 image = new createjs.Bitmap(skyTypes["clouds1"]);
                 image.x = x;
                 image.y = y;
                 clouds.addChild(image);
-            } else if (rand > 0.75) {
+            } else if (rand < 0.20 && rand >= 0.10) {
                 image = new createjs.Bitmap(skyTypes["clouds2"]);
+                image.x = x;
+                image.y = y;
+                clouds.addChild(image);
+            } else if (rand < 0.30 && rand >= 0.20) {
+                image = new createjs.Bitmap(skyTypes["clouds3"])
                 image.x = x;
                 image.y = y;
                 clouds.addChild(image);
