@@ -4,6 +4,15 @@
     var canvas;
     var player;
 
+    // small module so other modules can signal the server
+    var Server = {}
+
+    Server.signalDeath = function() {
+        socket.emit("death");
+    }
+
+    window.Server = Server
+
     // set up controls
     $("#balance-canvas").keydown(Controls.keydown);
     $("#balance-canvas").keyup(Controls.keyup);
@@ -31,6 +40,9 @@
     var socket = io.connect("http://54.184.95.238");
 
     socket.on("ready", function() {
+        // bgm loop
+        createjs.Sound.play("assets/Lightless Dawn.mp3", {"loop": -1})
+
         // The tick function, every time the Ticker ticks, this method is called
         createjs.Ticker.addEventListener("tick", function(tick) {
             // run simulations
@@ -64,6 +76,10 @@
 
     socket.on("lives", function(lives) {
         console.log("lives changed: " + lives);
+    });
+
+    socket.on("death", function() {
+        PlayerPhysics.respawn();
     });
 
     socket.on("game over", function() {

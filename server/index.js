@@ -81,13 +81,20 @@ io.sockets.on("connection", function(socket) {
 
     socket.on("death", function(amount) {
         socket.get("state", function(err, state) {
+            state.peer.emit("death");
+
             state.shared.lives -= 1;
             state.peer.emit("lives", state.shared.lives);
 
-            if(lives == 0) {
+            if(state.shared.lives == 0) {
                 socket.emit("game over");
                 state.peer.emit("game over");
+
+                state.shared.lives = 3;
             }
+            
+            state.shared.resources = 0;
+            state.shared.balance = 0;
         });
     });
 
