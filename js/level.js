@@ -137,9 +137,9 @@
         res.push(skyDefault);
 
         // Add sky bottom images
-        for (var i = 0; i < mapWidth; i++) {
+        for (var i = -padding; i < mapWidth + padding; i++) {
             var image = new createjs.Bitmap(skyTypes["bottom"]);
-            image.y = mapHeightPixels + tileSize;
+            image.y = mapHeightPixels + tileSize / 2;
             image.x = i * tileSize;
             skyBottom.addChild(image);
         }
