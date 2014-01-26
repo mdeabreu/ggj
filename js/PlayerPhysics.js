@@ -14,6 +14,10 @@
         this.initialY = y;
         this.dx = 0;
         this.dead = false;
+
+        this.hittingMirror = false;
+        this.hasSentWin = false;
+
         this.respawn();
     }
 
@@ -55,6 +59,16 @@
             this.run(1);
         }
         
+    }
+
+    PlayerPhysics.handleMirror = function() {
+        if (this.hittingMirror && !this.hasSentWin) {
+            Server.signalOnMirror();
+            this.hasSentWin = true;
+        } else if (!this.hittingMirror && this.hasSentWin) {
+            Server.signalOffMirror();
+            this.hasSentWin = false;
+        }
     }
 
     PlayerPhysics.run = function(direction) {

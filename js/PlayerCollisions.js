@@ -10,6 +10,7 @@
 
     function resolveTileCollisions() {
         PlayerPhysics.onGround = false;
+        PlayerPhysics.hittingMirror = false;
 
         for(var i = 0; i < Level.passabilityMap.length; ++i) {
             var row = Level.passabilityMap[i];
@@ -39,11 +40,17 @@
                     continue;
                 }
 
-                else if(cellTile == "c") {
+                if (cell == "M") {
+                    PlayerPhysics.hittingMirror = true;
+                    PlayerPhysics.handleMirror();
+                    continue;
+                } else if (cellTile == "c") {
                     Level.removeChroma(i, j);
                     Server.signalChromaAcquired();
                     continue;
                 }
+
+                PlayerPhysics.handleMirror();
 
                 if (PlayerPhysics.dead) {
                     console.log("still dying");
