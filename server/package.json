@@ -1,0 +1,25 @@
+{
+  "name": "ggj",
+  "version": "0.0.0",
+  "description": "Global Game Jam 2014 entry.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MichaelCarius/ggj.git"
+  },
+  "author": "Michael Carius",
+  "license": "Public domain",
+  "bugs": {
+    "url": "https://github.com/MichaelCarius/ggj/issues"
+  },
+  "homepage": "https://github.com/MichaelCarius/ggj",
+  "dependencies": {
+    "socket.io": "~0.9.16"
+  },
+  "engines": {
+    "node": "0.10.25"
+  }
+}
