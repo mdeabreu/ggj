@@ -32,18 +32,6 @@
     stage = new createjs.Stage(canvas);
     window.stage = stage;
 
-    // generate a skymap
-    var sky = Level.generateSky();
-    for (var i = 0; i < sky.length; i++) {
-        stage.addChild(sky[i]);
-    }
-
-    // set up the shadow
-    Shadow.initialize(stage);
-
-    // load the tile map
-    stage.addChild(Level.loadTiles());
-
     // Set the parameters for our Ticker including the function we call every tick
     createjs.Ticker.setFPS(60);
 
@@ -60,6 +48,20 @@
     socket.on("ready", function(aspect) {
         // remove loading screen
         StartScreen.hide(stage);
+
+        Level.initialize(aspect);
+
+        // generate a skymap
+        var sky = Level.generateSky();
+        for (var i = 0; i < sky.length; i++) {
+            stage.addChild(sky[i]);
+        }
+
+        // set up the shadow
+        Shadow.initialize(stage);
+
+        // load the tile map
+        stage.addChild(Level.loadTiles());
 
         // bgm loop
         createjs.Sound.play("assets/Lightless Dawn.mp3", {"loop": -1})
