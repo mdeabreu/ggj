@@ -137,9 +137,6 @@
     });
 
     socket.on("death", function() {
-        PlayerPhysics.respawn();
-        Level.resetTileMap();
-        Level.loadTiles();
     });
 
     socket.on("game over", function() {

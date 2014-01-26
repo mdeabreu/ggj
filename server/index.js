@@ -67,7 +67,7 @@ io.sockets.on("connection", function(socket) {
         console.log("spend " + amount + " from " + alignment);
         if(amount > 0) {
             socket.get("state", function(err, state) {
-                if(state.shared.resources > 0 && Math.abs(state.shared.balance) < 5) {
+                if(state.shared.resources > 0) {
                     // 1. change resources available
                     var subtracted = Math.min(amount, state.shared.resources);
                     state.shared.resources -= subtracted;
