@@ -19,12 +19,12 @@
                     speed: 0.3
                 },
                 idle: {
-                    frames: [1],
-                }/*,
+                    frames: [15]
+                },
                 jump: {
-                    frames: [],
-                    speed: 0.3
-                }*/
+                    frames: [8, 9, 10, 11, 12, 13, 14],
+                    speed: 0.2
+                }
             }
         };
         this.Sprite_initialize(new createjs.SpriteSheet(data), "idle");
@@ -50,24 +50,27 @@
 
     Player.prototype.applyAnimation = function() {
         // Deal with any transformation that may need to occur
-        if (PlayerPhysics.dx > 0){
-            if (this.currentAnimation != "run") {
-                this.gotoAndPlay("run");
+        if (PlayerPhysics.onGround) {
+            if (PlayerPhysics.dx > 0){
+                if (this.currentAnimation != "jump") {
+                    this.gotoAndPlay("jump");
+                }
+                this.setTransform(this.x, this.y, 1);
+            } else if (PlayerPhysics.dx < 0) {
+                if (this.currentAnimation != "run") {
+                    this.gotoAndPlay("run");
+                }
+                this.setTransform(this.x, this.y, -1, 1, 0, 0, 0, this.width, 0);
             }
-            this.setTransform(this.x, this.y, 1);
-        } else if (PlayerPhysics.dx < 0) {
-            if (this.currentAnimation != "run") {
-                this.gotoAndPlay("run");
+
+            if (PlayerPhysics.dx == 0) {
+                this.gotoAndPlay("idle");
             }
-            this.setTransform(this.x, this.y, -1, 1, 0, 0, 0, this.width, 0);
-        }
-
-        if (PlayerPhysics.dx == 0) {
-            this.gotoAndPlay("idle");
-        }
-
-        if (!PlayerPhysics.onGround) {
-            //this.gotoAndPlay("jump");
+        } else {
+            if (this.currentAnimation != "jump") {
+                console.log("test");
+                this.gotoAndPlay("jump");
+            }
         }
     };
 
