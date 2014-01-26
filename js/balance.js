@@ -7,6 +7,10 @@
     // small module so other modules can signal the server
     var Server = {}
 
+    Server.signalChromaAcquired = function() {
+        socket.emit("acquire resources", 1);
+    }
+
     Server.signalPing = function() {
         socket.emit("ping");
     }
@@ -26,6 +30,7 @@
     canvas.focus();
 
     stage = new createjs.Stage(canvas);
+    window.stage = stage;
 
     // generate a skymap
     var sky = Level.generateSky();
@@ -105,6 +110,8 @@
 
     socket.on("death", function() {
         PlayerPhysics.respawn();
+        Level.resetTileMap();
+        Level.loadTiles();
     });
 
     socket.on("game over", function() {

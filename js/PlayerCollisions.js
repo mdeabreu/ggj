@@ -15,8 +15,9 @@
             var row = Level.passabilityMap[i];
             for(var j = 0; j < row.length; ++j) {
                 var cell = row[j];
+                var cellTile = Level.tileMap[i][j];
 
-                if(cell == ' ')
+                if(cell == ' ' && cellTile != "c")
                     continue;
 
                 // part 1: check if player intersects tile
@@ -25,14 +26,23 @@
 
                 if(Math.abs(PlayerPhysics.x - tileX) > halfWidth + Level.tileSize / 2)
                     continue;
-                
+
                 if(Math.abs(PlayerPhysics.y - tileY) > halfHeight + Level.tileSize / 2)
                     continue;
 
                 // part 2: collision detected, resolve it
                 if(cell == "^") {
                     PlayerPhysics.respawn();
+                    Level.resetTileMap();
+                    Level.loadTiles();
                     Server.signalDeath();
+                    continue;
+                }
+
+                else if(cellTile == "c") {
+                    Level.removeChroma(i, j);
+                    Server.signalChromaAcquired();
+                    continue;
                 }
 
                 var rl = (PlayerPhysics.x + halfWidth) - (tileX - Level.tileSize / 2);
