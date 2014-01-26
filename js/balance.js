@@ -21,8 +21,6 @@
     // load the tile map
     stage.addChild(Level.loadTiles());
 
-    PlayerPhysics.initialize(400, 0);
-
     // Set the parameters for our Ticker including the function we call every tick
     createjs.Ticker.setFPS(60);
 
