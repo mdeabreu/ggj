@@ -63,7 +63,8 @@ io.sockets.on("connection", function(socket) {
     });
 
     socket.on("spend resources", function(amount, alignment) {
-        if(amount < 0)
+        console.log("spend " + amount + " from " + alignment);
+        if(amount > 0) {
             socket.get("state", function(err, state) {
                 if(state.shared.resources > 0 && Math.abs(state.shared.balance) < 5) {
                     // 1. change resources available
@@ -81,6 +82,7 @@ io.sockets.on("connection", function(socket) {
                     state.peer.emit("balance", state.shared.balance);
                 }
             });
+        }
     });
 
     socket.on("death", function(amount) {

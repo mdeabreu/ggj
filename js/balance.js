@@ -3,12 +3,21 @@
     var stage;
     var canvas;
     var player;
+    var playerAspect;
 
     // small module so other modules can signal the server
     var Server = {}
 
     Server.signalChromaAcquired = function() {
         socket.emit("acquire resources", 1);
+    }
+
+    Server.signalChromaRequest = function() {
+        if(playerAspect)
+            socket.emit("spend resources", 1, 1);
+
+        else
+            socket.emit("spend resources", 1, -1);
     }
 
     Server.signalPing = function() {
@@ -46,6 +55,8 @@
     });
 
     socket.on("ready", function(aspect) {
+        playerAspect = aspect;
+
         // remove loading screen
         StartScreen.hide(stage);
 
@@ -110,11 +121,12 @@
 
     // handle network messages
     socket.on("resources", function(resources) {
-        //console.log("resources changed: " + resources);
+        console.log("resources changed: " + resources);
         UserInterface.changeResources(resources);
     });
 
     socket.on("balance", function(balance) {
+        console.log("balance changed: " + balance);
         Level.changeChroma(stage, balance);
         UserInterface.changeBalance(balance);
     });

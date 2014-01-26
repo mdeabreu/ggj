@@ -7,6 +7,7 @@
     var KEYCODE_R = 82;
     var KEYCODE_P = 80;
     var KEYCODE_SPACE = 32;
+    var KEYCODE_C = 67;
 
     var heldKeys = {};
 
@@ -29,8 +30,14 @@
             PlayerPhysics.jump();
         } else if(e.keyCode == KEYCODE_P) {
             Server.signalPing();
+        } else if(e.keyCode == KEYCODE_C) {
+            Server.signalChromaRequest();
+        } else {
+            return;
         }
-        
+
+        e.preventDefault();
+        e.stopPropagation();
     };
     
     Controls.keyup = function(e) {
