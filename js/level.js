@@ -14,7 +14,8 @@
         'g': "assets/regularSprites/block_grass1.png",
         'G': "assets/regularSprites/block_grass2.png",
         'l': "assets/regularSprites/block_long.png",
-        'L': "assets/regularSprites/block_long_grass.png"
+        'L': "assets/regularSprites/block_long_grass.png",
+        's': "assets/regularSprites/block_spike.png"
     };
 
     var skyTypes = {
@@ -103,38 +104,28 @@
         var mapHeight = tileMap.length;
         var mapHeightPixels = mapHeight * tileSize;
 
+        var padding = 10;
+        for (var i = -padding; i < mapHeight + padding; i++) {
+            for (var j = -padding; j < mapWidth + padding; j++) {
+                var image = new createjs.Bitmap(skyTypes["default"]);
+                image.y = mapHeightPixels - tileSize * i;
+                image.x = j * tileSize;
+                skyDefault.addChild(image);
+            }
+        }
+        res.push(skyDefault);
+
         // Add sky bottom images
         for (var i = 0; i < mapWidth; i++) {
             var image = new createjs.Bitmap(skyTypes["bottom"]);
-            image.y = mapHeightPixels;
+            image.y = mapHeightPixels + tileSize;
             image.x = i * tileSize;
             skyBottom.addChild(image);
         }
         res.push(skyBottom);
 
-        // Add default sky
-        var y1 = mapHeightPixels - tileSize * 2;
-        var y2 = mapHeightPixels - tileSize * 3;
-        var y3 = mapHeightPixels - tileSize * 4;
-        for (var i = 0; i < mapWidth; i++) {
-            var image1 = new createjs.Bitmap(skyTypes["default"]);
-            var image2 = new createjs.Bitmap(skyTypes["default"]);
-            var image3 = new createjs.Bitmap(skyTypes["default"]);
-            image1.y = y1;
-            image2.y = y2;
-            image3.y = y3;
-            x = i * tileSize;
-            image1.x = x;
-            image2.x = x;
-            image3.x = x;
-            skyDefault.addChild(image1);
-            skyDefault.addChild(image2);
-            skyDefault.addChild(image3);
-        }
-        res.push(skyDefault)
-
         // Add some clouds
-        for (var i = 0; i < mapWidth; i++) {
+        for (var i = 0; i < mapWidth; i += 2) {
             var image;
 
             var rand = Math.random();
@@ -155,9 +146,10 @@
                 var image2 = new createjs.Bitmap(skyTypes["default"]);
                 image.x = x;
                 image.y = y;
-                image2.x = x;
-                image2.y = y + tileSize;
+                image2.x = x + tileSize;
+                image2.y = y;
                 clouds.addChild(image);
+                clouds.addChild(image2);
             }
         }
         res.push(clouds);
