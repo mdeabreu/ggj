@@ -15,7 +15,8 @@
         'G': "assets/regularSprites/block_grass2.png",
         'l': "assets/regularSprites/block_long.png",
         'L': "assets/regularSprites/block_long_grass.png",
-        's': "assets/regularSprites/block_spike.png"
+        's': "assets/regularSprites/block_spike.png",
+        'S': "assets/regularSprites/block_shadow_spritesheet.png"
     };
 
     var skyTypes = {
@@ -70,8 +71,28 @@
 
                 var bitmap;
 
-                if(cell != ' ') {
-                    src = blockTypes[String(cell)];
+                src = blockTypes[String(cell)];
+
+                if (cell == 'S') {
+                    var frameOrder = [];
+                    for (var num = 0; num < 20; num++) {
+                        frameOrder.push(Math.floor(Math.random() * 4));
+                    }
+
+                    var data = {
+                        images: [src],
+                        frames: {width:62, height:64},
+                        animations: {
+                            idle: {
+                                frames: frameOrder,
+                                speed: 0.15
+                            }
+                        }
+                    };
+                    var spritesheet = new createjs.SpriteSheet(data);
+                    bitmap = new createjs.Sprite(spritesheet, "idle");
+                    bitmap.regX = -1;
+                } else if(cell != ' ') {
                     bitmap = new createjs.Bitmap(src);
                 }
 
