@@ -11,6 +11,7 @@ io.sockets.on("connection", function(socket) {
         sharedState.resources = 0;
         sharedState.balance = 0;
         sharedState.lives = 3;
+        sharedState.onMirrorCount = 0;
 
         socket.set("state", {"peer": waiting, "aspect": coin, "shared": sharedState}, function() {
             socket.emit("ready", coin);
@@ -66,7 +67,7 @@ io.sockets.on("connection", function(socket) {
         console.log("spend " + amount + " from " + alignment);
         if(amount > 0) {
             socket.get("state", function(err, state) {
-                if(state.shared.resources > 0 && Math.abs(state.shared.balance) < 5) {
+                if(state.shared.resources > 0) {
                     // 1. change resources available
                     var subtracted = Math.min(amount, state.shared.resources);
                     state.shared.resources -= subtracted;
@@ -95,9 +96,10 @@ io.sockets.on("connection", function(socket) {
 
             if(state.shared.lives == 0) {
                 socket.emit("game over");
-                state.peer.emit("game over");
+                socket.disconnect();
 
-                state.shared.lives = 3;
+                state.peer.emit("game over");
+                state.peer.disconnect();
             }
             
             state.shared.resources = 0;
@@ -114,6 +116,24 @@ io.sockets.on("connection", function(socket) {
     socket.on("ping", function() {
         socket.get("state", function(err, state) {
             state.peer.emit("ping");
+        });
+    });
+
+    socket.on("enter mirror", function() {
+        socket.get("state", function(err, state) {
+            if(++state.onMirrorCount == 2) {
+                socket.emit("win game");
+                socket.disconnect();
+
+                state.peer.emit("win game");
+                socket.disconnect();
+            }
+        });
+    });
+
+    socket.on("leave mirror", function() {
+        socket.get("state", function(err, state) {
+            --state.onMirrorCount;
         });
     });
 });

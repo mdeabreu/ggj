@@ -19,7 +19,7 @@
         loadBlock.y = 350;
         stage.addChild(loadBlock);
 
-        intro = new createjs.Text("The world has been torn apart. \n\nReunite shadow with light \nto salvage this torn world.", "18px Courier", "#FFF");
+        intro = new createjs.Text("The world has been torn apart. \n\nReunite shadow with light \nto salvage it.", "18px Courier", "#FFF");
         intro.x = 170;
         intro.y = 100;
         stage.addChild(intro);
