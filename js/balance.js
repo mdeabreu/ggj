@@ -91,6 +91,7 @@
             // send new state to peer
             socket.emit("movement", PlayerPhysics.x, PlayerPhysics.y);
         });
+
     });
 
     // handle network messages
