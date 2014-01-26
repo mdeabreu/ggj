@@ -36,6 +36,8 @@
         this.height = 160;
         this.x = x;
         this.y = y;
+
+        PlayerPhysics.initialize(x, y);
         
         this.canvas = canvas;
     }
