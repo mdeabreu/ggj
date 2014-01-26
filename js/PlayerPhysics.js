@@ -7,11 +7,24 @@
     // module
     var PlayerPhysics = {}
 
+    var respawnCounter = 110;
+
     PlayerPhysics.initialize = function(x, y) {
         this.initialX = x;
         this.initialY = y;
         this.dx = 0;
+        this.dead = false;
         this.respawn();
+    }
+
+    PlayerPhysics.dying = function() {
+        this.dead = true;
+        this.onGround = false;
+        if (respawnCounter <= 0) {
+            this.respawn();
+            respawnCounter = 110;
+        }
+        respawnCounter--;
     }
 
     PlayerPhysics.respawn = function() {
@@ -19,6 +32,7 @@
         this.y = this.initialY;
         this.dy = 0;
         this.onGround = false;
+        this.dead = false; // issue because dead is always true
     }
 
     PlayerPhysics.run = function(direction) {

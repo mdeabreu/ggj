@@ -31,8 +31,15 @@
 
                 // part 2: collision detected, resolve it
                 if(cell == "^") {
-                    PlayerPhysics.respawn();
+                    if(!PlayerPhysics.dead) { 
+                        PlayerPhysics.dying();
+                    }
+                    //PlayerPhysics.respawn();
                     Server.signalDeath();
+                }
+
+                if (PlayerPhysics.dead) {
+                    PlayerPhysics.dying();
                 }
 
                 var rl = (PlayerPhysics.x + halfWidth) - (tileX - Level.tileSize / 2);

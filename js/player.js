@@ -54,10 +54,20 @@
 
     Player.prototype.applyAnimation = function() {
         // Deal with any transformation that may need to occur
+             if (PlayerPhysics.dead) {
+                if (this.currentAnimation != "death") {
+                    this.gotoAndPlay("death");
+                    console.log("hi");
+                    return;
+                }
+                return;
+            }
+
         if (PlayerPhysics.onGround) {
             if (PlayerPhysics.dx > 0){
                 if (this.currentAnimation != "run") {
                     this.gotoAndPlay("run");
+                    return;
                 }
                 this.setTransform(this.x, this.y, 1);
             } else if (PlayerPhysics.dx < 0) {
@@ -65,14 +75,17 @@
                     this.gotoAndPlay("run");
                 }
                 this.setTransform(this.x, this.y, -1, 1, 0, 0, 0, this.width, 0);
+                return;
             }
 
             if (PlayerPhysics.dx == 0) {
                 this.gotoAndPlay("idle");
+                return;
             }
         } else {
             if (this.currentAnimation != "jump") {
                 this.gotoAndPlay("jump");
+                return;
             }
         }
     };
