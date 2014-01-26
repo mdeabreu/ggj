@@ -26,14 +26,19 @@
     // Set the parameters for our Ticker including the function we call every tick
     createjs.Ticker.setFPS(60);
 
-    // The tick function, every time the Ticker ticks, this method is called
-    createjs.Ticker.addEventListener("tick", function(tick) {
-        PlayerPhysics.simulate(tick.delta / 1000);
-        PlayerCollisions.resolve();
+    // initialize the network connection and wait for a peer
+    var socket = io.connect("http://54.184.95.238");
 
-        player.update();
-        stage.x = -player.x + canvas.width / 2;
-        stage.y = -player.y + canvas.height / 2;
-        stage.update();
+    socket.on("ready", function() {
+        // The tick function, every time the Ticker ticks, this method is called
+        createjs.Ticker.addEventListener("tick", function(tick) {
+            PlayerPhysics.simulate(tick.delta / 1000);
+            PlayerCollisions.resolve();
+
+            player.update();
+            stage.x = -player.x + canvas.width / 2;
+            stage.y = -player.y + canvas.height / 2;
+            stage.update();
+        });
     });
 })();
