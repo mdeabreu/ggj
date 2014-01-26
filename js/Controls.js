@@ -24,11 +24,7 @@
         } else if (e.keyCode == KEYCODE_SPACE) {
             PlayerPhysics.jump();
         } else if(e.keyCode == KEYCODE_P) {
-            if (createjs.Ticker.getPaused()) {
-                createjs.Ticker.setPaused(false);
-            } else {
-                createjs.Ticker.setPaused(true);
-            }
+            Server.signalPing();
         }
     };
     

@@ -11,13 +11,13 @@
         this.initialX = x;
         this.initialY = y;
         this.dx = 0;
-        this.dy = 0;
         this.respawn();
     }
 
     PlayerPhysics.respawn = function() {
         this.x = this.initialX;
         this.y = this.initialY;
+        this.dy = 0;
         this.onGround = false;
     }
 

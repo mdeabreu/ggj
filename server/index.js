@@ -108,4 +108,10 @@ io.sockets.on("connection", function(socket) {
             state.peer.emit("peer movement", x, y);
         });
     });
+
+    socket.on("ping", function() {
+        socket.get("state", function(err, state) {
+            state.peer.emit("ping");
+        });
+    });
 });

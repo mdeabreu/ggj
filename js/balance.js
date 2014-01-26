@@ -7,6 +7,10 @@
     // small module so other modules can signal the server
     var Server = {}
 
+    Server.signalPing = function() {
+        socket.emit("ping");
+    }
+
     Server.signalDeath = function() {
         socket.emit("death");
     }
@@ -110,5 +114,9 @@
     socket.on("peer movement", function(x, y) {
         Shadow.x = x;
         Shadow.y = y;
+    });
+
+    socket.on("ping", function() {
+        Shadow.receivePing();
     });
 })();
