@@ -121,7 +121,7 @@ io.sockets.on("connection", function(socket) {
 
     socket.on("enter mirror", function() {
         socket.get("state", function(err, state) {
-            if(++state.onMirrorCount == 2) {
+            if(++state.shared.onMirrorCount == 2) {
                 socket.emit("win game");
                 socket.disconnect();
 
@@ -133,7 +133,7 @@ io.sockets.on("connection", function(socket) {
 
     socket.on("leave mirror", function() {
         socket.get("state", function(err, state) {
-            --state.onMirrorCount;
+            --state.shared.onMirrorCount;
         });
     });
 });
