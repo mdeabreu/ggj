@@ -19,7 +19,10 @@
 
     PlayerPhysics.dying = function() {
         this.dead = true;
-        this.onGround = false;
+
+        this.dx = 0;
+        //Controls.heldKeys = {};
+        
         if (respawnCounter <= 0) {
             this.respawn();
             respawnCounter = 110;
@@ -28,19 +31,35 @@
     }
 
     PlayerPhysics.respawn = function() {
+        Server.signalDeath();
         this.x = this.initialX;
         this.y = this.initialY;
         this.dy = 0;
         this.onGround = false;
-        this.dead = false; // issue because dead is always true
+        this.dead = false; 
+
+        if (Controls.isAHeld()) {
+            this.run(-1);
+        }
+
+        if (Controls.isDHeld()) {
+            this.run(1);
+        }
+        
     }
 
     PlayerPhysics.run = function(direction) {
+       if(this.dead) {
+        this.dx = 0;
+        return;
+       }
+
         this.dx += direction * movementSpeed;
+        
     }
 
     PlayerPhysics.jump = function() {
-        if(!this.onGround)
+        if(!this.onGround || this.dead)
             return;
         
         this.dy = jumpImpulse;

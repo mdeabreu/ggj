@@ -35,7 +35,6 @@
                         PlayerPhysics.dying();
                     }
                     //PlayerPhysics.respawn();
-                    Server.signalDeath();
                 }
 
                 if (PlayerPhysics.dead) {

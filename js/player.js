@@ -57,7 +57,6 @@
              if (PlayerPhysics.dead) {
                 if (this.currentAnimation != "death") {
                     this.gotoAndPlay("death");
-                    console.log("hi");
                     return;
                 }
                 return;
