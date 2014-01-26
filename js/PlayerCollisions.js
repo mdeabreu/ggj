@@ -16,7 +16,7 @@
             for(var j = 0; j < row.length; ++j) {
                 var cell = row[j];
 
-                if(cell == 0)
+                if(cell == ' ')
                     continue;
 
                 // part 1: check if player intersects tile
