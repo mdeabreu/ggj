@@ -27,6 +27,11 @@
         stage.addChild(shadowSprite);
     }
 
+    Shadow.receivePing = function() {
+        shadowSprite.gotoAndPlay("ping");
+        createjs.Sound.play("assets/Ping.mp3");
+    }
+
     Shadow.update = function() {
         shadowSprite.x = Shadow.x - 64;
         shadowSprite.y = Shadow.y - 75;
