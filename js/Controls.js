@@ -17,6 +17,10 @@
             return;
         heldKeys[e.keyCode] = true;
 
+        if(PlayerPhysics.dead) {
+            return;
+        }
+
         if (e.keyCode == KEYCODE_A) {
             PlayerPhysics.run(-1);
         } else if (e.keyCode == KEYCODE_D) {
@@ -26,6 +30,7 @@
         } else if(e.keyCode == KEYCODE_P) {
             Server.signalPing();
         }
+        
     };
     
     Controls.keyup = function(e) {
@@ -37,6 +42,22 @@
             PlayerPhysics.run(-1);
         } 
     };
+
+    Controls.isAHeld = function() {
+        if (heldKeys[KEYCODE_A]) {
+            return true;
+        } else { 
+            return false;
+        }
+    }
+
+    Controls.isDHeld = function() {
+        if (heldKeys[KEYCODE_D]) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     window.Controls = Controls;
 })();

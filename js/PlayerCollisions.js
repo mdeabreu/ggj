@@ -32,22 +32,22 @@
 
                 // part 2: collision detected, resolve it
                 if(cell == "^") {
-                    PlayerPhysics.respawn();
-                    Level.resetTileMap();
+                    if(!PlayerPhysics.dead) { 
+                        PlayerPhysics.dying();
+                    }
 
-                    var tiles = stage.getChildByName("tiles");
-                    var tilesIndex = stage.getChildIndex(tiles);
-                    stage.removeChild(tiles);
-
-                    stage.addChildAt(Level.loadTiles(), tilesIndex);
-
-                    Server.signalDeath();
                     continue;
                 }
 
                 else if(cellTile == "c") {
                     Level.removeChroma(i, j);
                     Server.signalChromaAcquired();
+                    continue;
+                }
+
+                if (PlayerPhysics.dead) {
+                    console.log("still dying");
+                    PlayerPhysics.dying();
                     continue;
                 }
 

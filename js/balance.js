@@ -108,7 +108,7 @@
 
     // handle network messages
     socket.on("resources", function(resources) {
-        console.log("resources changed: " + resources);
+        //console.log("resources changed: " + resources);
         UserInterface.changeResources(resources);
     });
 
@@ -118,7 +118,7 @@
     });
 
     socket.on("lives", function(lives) {
-        console.log("lives changed: " + lives);
+        //console.log("lives changed: " + lives);
         UserInterface.changeLives(lives);
     });
 
@@ -129,7 +129,7 @@
     });
 
     socket.on("game over", function() {
-        console.log("game over!");
+        //console.log("game over!");
     });
 
     socket.on("peer movement", function(x, y) {
