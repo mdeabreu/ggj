@@ -23,7 +23,7 @@
                 },
                 jump: {
                     frames: [8, 9, 10, 11, 12, 13, 14],
-                    speed: 0.2
+                    speed: 0.15
                 }
             }
         };
@@ -52,8 +52,8 @@
         // Deal with any transformation that may need to occur
         if (PlayerPhysics.onGround) {
             if (PlayerPhysics.dx > 0){
-                if (this.currentAnimation != "jump") {
-                    this.gotoAndPlay("jump");
+                if (this.currentAnimation != "run") {
+                    this.gotoAndPlay("run");
                 }
                 this.setTransform(this.x, this.y, 1);
             } else if (PlayerPhysics.dx < 0) {
@@ -68,7 +68,6 @@
             }
         } else {
             if (this.currentAnimation != "jump") {
-                console.log("test");
                 this.gotoAndPlay("jump");
             }
         }
