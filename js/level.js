@@ -34,7 +34,7 @@
 
     Level.passabilityMap = passabilityMap;
 
-    function loadTiles() {
+    Level.loadTiles = function() {
         var tiles = new createjs.Container();
 
         for(var i = 0; i < tileMap.length; ++i) {
@@ -59,6 +59,5 @@
         return tiles;
     }
 
-    window.loadTiles = loadTiles;
     window.Level = Level;
 })();
