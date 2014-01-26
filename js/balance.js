@@ -71,6 +71,9 @@
         // Load the opposite image for our shadow
         Shadow.selectAspect(aspect);
 
+        // Render the user interface
+        UserInterface.initialize(stage);
+
         // The tick function, every time the Ticker ticks, this method is called
         createjs.Ticker.addEventListener("tick", function(tick) {
             // run simulations
@@ -85,6 +88,10 @@
             stage.x = -player.x + canvas.width / 2;
             stage.y = -player.y + canvas.height / 2;
 
+            UserInterface.x = player.x - canvas.width / 2;
+            UserInterface.y = player.y - canvas.height / 2;
+            UserInterface.update();
+
             // draw everything
             stage.update();
 
@@ -96,14 +103,17 @@
     // handle network messages
     socket.on("resources", function(resources) {
         console.log("resources changed: " + resources);
+        UserInterface.changeResources(resources);
     });
 
     socket.on("balance", function(balance) {
         Level.changeChroma(stage, balance);
+        UserInterface.changeBalance(balance);
     });
 
     socket.on("lives", function(lives) {
         console.log("lives changed: " + lives);
+        UserInterface.changeLives(lives);
     });
 
     socket.on("death", function() {
