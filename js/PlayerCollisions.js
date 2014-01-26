@@ -30,9 +30,8 @@
                     continue;
 
                 // part 2: collision detected, resolve it
-                if(cell == 2)
-                    // TODO die
-                    ;
+                if(cell == "^")
+                    Server.signalDeath();
 
                 var rl = (PlayerPhysics.x + halfWidth) - (tileX - Level.tileSize / 2);
                 var lr = (PlayerPhysics.x - halfWidth) - (tileX + Level.tileSize / 2);
