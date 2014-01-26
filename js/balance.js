@@ -99,7 +99,7 @@
     });
 
     socket.on("balance", function(balance) {
-        console.log("balance changed: " + balance);
+        Level.changeChroma(stage, balance);
     });
 
     socket.on("lives", function(lives) {
