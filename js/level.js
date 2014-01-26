@@ -41,15 +41,16 @@
         ['#', ' ', ' ', ' ', ' ', ' ', 'c', ' ', ' ', 'B', ' ', 'c', 'B', ' ', 'c', 'B', ' ', ' ', '#', 'b', ' ', 'B', ' ', ' ', 'B', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
         ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
         ['#', '#', '#', '#', ' ', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'],
-        ['#', '#', '#', '#', ' ', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#']
+        ['#', '#', '#', '#', 's', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#']
     ];
 
     Level.resetTileMap = function() {
         Level.tileMap = [];
         for(var i = 0; i < tileMap.length; ++i) {
             Level.tileMap.push([]);
-            for(var j = 0; j < tileMap[i].length; ++j)
+            for(var j = 0; j < tileMap[i].length; ++j) {
                 Level.tileMap[i].push(tileMap[i][j]);
+            }
         }
     }
 
@@ -216,27 +217,26 @@
     };
 
     Level.removeChroma = function(i, j) {
-        if(tileMap[i][j] != "c")
+        if(Level.tileMap[i][j] != "c")
             return;
 
-        var tiles = window.stage.getChildByName("tiles");
+        var tiles = stage.getChildByName("tiles");
         var childIndex = 0;
-        for(var p = 0; p < tileMap.length; ++p) {
-            var row = tileMap[p];
-            for(var q = 0; q < row.length; ++q) {
-                var cell = row[q];
+        var done = false;
 
+        for(var p = 0; p < tileMap.length && !done; ++p)
+            for(var q = 0; q < tileMap[p].length && !done; ++q) {
                 if(p == i && q == j)
-                    break;
+                    done = true;
 
-                else if(cell != ' ')
+                else if(Level.tileMap[p][q] != ' ')
                     ++childIndex;
             }
-        }
 
-        tileMap[i][j] = ' ';
+        console.log(childIndex);
+
+        Level.tileMap[i][j] = ' ';
         tiles.removeChildAt(childIndex);
-        console.log("remove chroma");
     }
 
     window.Level = Level;
