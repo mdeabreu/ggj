@@ -29,8 +29,10 @@ io.sockets.on("connection", function(socket) {
         waiting = null;
     }
 
-    else
+    else {
+        socket.emit("waiting");
         waiting = socket;
+    }
 
     socket.on("resources?", function() {
         socket.get("state", function(err, state) {
@@ -86,6 +88,7 @@ io.sockets.on("connection", function(socket) {
             state.peer.emit("death");
 
             state.shared.lives -= 1;
+            socket.emit("lives", state.shared.lives);
             state.peer.emit("lives", state.shared.lives);
 
             if(state.shared.lives == 0) {
