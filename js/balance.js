@@ -32,13 +32,42 @@
     socket.on("ready", function() {
         // The tick function, every time the Ticker ticks, this method is called
         createjs.Ticker.addEventListener("tick", function(tick) {
+            // run simulations
             PlayerPhysics.simulate(tick.delta / 1000);
             PlayerCollisions.resolve();
 
+            // update player position
             player.update();
+
+            // update camera
             stage.x = -player.x + canvas.width / 2;
             stage.y = -player.y + canvas.height / 2;
+
+            // draw everything
             stage.update();
+
+            // send new state to peer
+            socket.emit("movement", PlayerPhysics.x, PlayerPhysics.y);
         });
+    });
+
+    socket.on("resources", function(resources) {
+        console.log("resources changed: " + resources);
+    });
+
+    socket.on("balance", function(balance) {
+        console.log("balance changed: " + balance);
+    });
+
+    socket.on("lives", function(lives) {
+        console.log("lives changed: " + lives);
+    });
+
+    socket.on("game over", function() {
+        console.log("game over!");
+    });
+
+    socket.on("peer movement", function(x, y) {
+        console.log("peer moved to (" + x + ", " + y + ")");
     });
 })();

@@ -1,18 +1,99 @@
 var io = require("socket.io").listen(80);
 
-var peers = {};
 var waiting = null;
 
 io.sockets.on("connection", function(socket) {
     // matchmaking
     if(waiting !== null) {
-        peers[waiting] = socket;
-        peers[socket] = waiting;
-        socket.emit("ready");
-        waiting.emit("ready");
+        var sharedState = {};
+        sharedState.resources = 0;
+        sharedState.balance = 0;
+        sharedState.lives = 3;
+
+        socket.set("state", {"peer": waiting, "shared": sharedState}, function() {
+            socket.emit("ready");
+            socket.emit("resources", sharedState.resources);
+            socket.emit("balance", sharedState.balance);
+            socket.emit("lives", sharedState.lives);
+        });
+
+        waiting.set("state", {"peer": socket, "shared": sharedState}, function() {
+            waiting.emit("ready");
+            waiting.emit("resources", sharedState.resources);
+            waiting.emit("balance", sharedState.balance);
+            waiting.emit("lives", sharedState.lives);
+        });
+
         waiting = null;
     }
 
     else
         waiting = socket;
+
+    socket.on("resources?", function() {
+        socket.get("state", function(err, state) {
+            socket.emit("resources", state.shared.resources);
+        });
+    });
+
+    socket.on("balance?", function() {
+        socket.get("state", function(err, state) {
+            socket.emit("balance", state.shared.balance);
+        });
+    });
+
+    socket.on("lives?", function() {
+        socket.get("state", function(err, state) {
+            socket.emit("lives", state.shared.lives);
+        });
+    });
+
+    socket.on("acquire resources", function(amount) {
+        if(amount > 0)
+            socket.get("state", function(err, state) {
+                state.shared.resources += amount;
+
+                socket.emit("resources", state.shared.resources);
+                state.peer.emit("resources", state.shared.resources);
+            });
+    });
+
+    socket.on("spend resources", function(amount, alignment) {
+        if(amount < 0)
+            socket.get("state", function(err, state) {
+                if(state.shared.resources > 0 && Math.abs(state.shared.balance) < 5) {
+                    // 1. change resources available
+                    var subtracted = Math.min(amount, state.shared.resources);
+                    state.shared.resources -= subtracted;
+
+                    socket.emit("resources", state.shared.resources);
+                    state.peer.emit("resources", state.shared.resources);
+
+                    // 2. change balance
+                    var added = Math.min(amount, 5 - Math.abs(state.shared.balance));
+                    state.shared.balance += added * alignment
+
+                    socket.emit("balance", state.shared.balance);
+                    state.peer.emit("balance", state.shared.balance);
+                }
+            });
+    });
+
+    socket.on("death", function(amount) {
+        socket.get("state", function(err, state) {
+            state.shared.lives -= 1;
+            state.peer.emit("lives", state.shared.lives);
+
+            if(lives == 0) {
+                socket.emit("game over");
+                state.peer.emit("game over");
+            }
+        });
+    });
+
+    socket.on("movement", function(x, y) {
+        socket.get("state", function(err, state) {
+            state.peer.emit("peer movement", x, y);
+        });
+    });
 });
