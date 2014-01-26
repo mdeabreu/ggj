@@ -41,7 +41,17 @@
     // initialize the network connection and wait for a peer
     var socket = io.connect("http://54.184.95.238");
 
+    // initialize loading screen
+    StartScreen.draw(stage);
+
+    socket.on("waiting", function() {
+        stage.update();
+    });
+
     socket.on("ready", function(aspect) {
+        // remove loading screen
+        StartScreen.hide(stage);
+
         // bgm loop
         createjs.Sound.play("assets/Lightless Dawn.mp3", {"loop": -1})
 
