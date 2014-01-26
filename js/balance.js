@@ -47,10 +47,10 @@
 
         // Load the image for our player
         if(aspect)
-            player = new Player("assets/lightRun/spritesheet-jump.png", canvas, 100, 100);
+            player = new Player("assets/lightRun/spritesheet-jump-death.png", canvas, 100, 100);
 
         else
-            player = new Player("assets/shadowRun/spritesheet-jump.png", canvas, 100, 100);
+            player = new Player("assets/shadowRun/spritesheet-jump-death.png", canvas, 100, 100);
 
         stage.addChild(player);
 
