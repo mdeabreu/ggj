@@ -5,20 +5,22 @@ var waiting = null;
 io.sockets.on("connection", function(socket) {
     // matchmaking
     if(waiting !== null) {
+        var coin = Math.floor(Math.random() * 2) == 0;
+
         var sharedState = {};
         sharedState.resources = 0;
         sharedState.balance = 0;
         sharedState.lives = 3;
 
-        socket.set("state", {"peer": waiting, "shared": sharedState}, function() {
-            socket.emit("ready");
+        socket.set("state", {"peer": waiting, "aspect": coin, "shared": sharedState}, function() {
+            socket.emit("ready", coin);
             socket.emit("resources", sharedState.resources);
             socket.emit("balance", sharedState.balance);
             socket.emit("lives", sharedState.lives);
         });
 
-        waiting.set("state", {"peer": socket, "shared": sharedState}, function() {
-            waiting.emit("ready");
+        waiting.set("state", {"peer": socket, "aspect": !coin, "shared": sharedState}, function() {
+            waiting.emit("ready", !coin);
             waiting.emit("resources", sharedState.resources);
             waiting.emit("balance", sharedState.balance);
             waiting.emit("lives", sharedState.lives);

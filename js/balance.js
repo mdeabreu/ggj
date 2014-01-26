@@ -29,19 +29,24 @@
     // load the tile map
     stage.addChild(Level.loadTiles());
 
-    // Load the image for our player
-    player = new Player("assets/lightRun/spritesheet-jump.png", canvas, 100, 100);
-    stage.addChild(player);
-
     // Set the parameters for our Ticker including the function we call every tick
     createjs.Ticker.setFPS(60);
 
     // initialize the network connection and wait for a peer
     var socket = io.connect("http://54.184.95.238");
 
-    socket.on("ready", function() {
+    socket.on("ready", function(aspect) {
         // bgm loop
         createjs.Sound.play("assets/Lightless Dawn.mp3", {"loop": -1})
+
+        // Load the image for our player
+        if(aspect)
+            player = new Player("assets/lightRun/spritesheet-jump.png", canvas, 100, 100);
+
+        else
+            player = new Player("assets/shadowRun/spritesheet-jump.png", canvas, 100, 100);
+
+        stage.addChild(player);
 
         // The tick function, every time the Ticker ticks, this method is called
         createjs.Ticker.addEventListener("tick", function(tick) {
