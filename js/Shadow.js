@@ -32,6 +32,17 @@
         createjs.Sound.play("assets/Ping.mp3");
     }
 
+    Shadow.selectAspect = function(aspect) {
+        if (!aspect) {
+            data.images = ["assets/regularSprites/otherPlayerLight-spritesheet.png"];
+        } else {
+            data.images = ["assets/regularSprites/otherPlayerShadow-spritesheet.png"];
+        }
+
+        spritesheet = new createjs.SpriteSheet(data);
+        shadowSprite.spriteSheet = spritesheet;
+    }
+
     Shadow.update = function() {
         shadowSprite.x = Shadow.x - 64;
         shadowSprite.y = Shadow.y - 75;

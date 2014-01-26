@@ -68,6 +68,9 @@
 
         stage.addChild(player);
 
+        // Load the opposite image for our shadow
+        Shadow.selectAspect(aspect);
+
         // The tick function, every time the Ticker ticks, this method is called
         createjs.Ticker.addEventListener("tick", function(tick) {
             // run simulations
