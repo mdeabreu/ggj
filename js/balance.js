@@ -14,15 +14,15 @@
 
     stage = new createjs.Stage(canvas);
 
-    // Load the image for our player
-    player = new Player("assets/lightRun/spritesheet-jump.png", canvas, 100, 100);
-    stage.addChild(player);
-
     // set up the shadow
     Shadow.initialize(stage);
 
     // load the tile map
     stage.addChild(Level.loadTiles());
+
+    // Load the image for our player
+    player = new Player("assets/lightRun/spritesheet-jump.png", canvas, 100, 100);
+    stage.addChild(player);
 
     // Set the parameters for our Ticker including the function we call every tick
     createjs.Ticker.setFPS(60);
